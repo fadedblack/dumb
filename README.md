@@ -20,6 +20,19 @@ dumb "Show disk usage for the home folder"
 1. Install Dumb CLI (instructions coming soon)
 2. Run `dumb "your command description"`
 
+### Project Structure
+
+```
+src/
+  main.ts        # Entry point for Dumb CLI
+
+test/
+  main_test.ts   # Basic test for CLI entry point
+
+deno.json        # Deno configuration and tasks
+README.md        # Project documentation
+```
+
 ### License
 
 MIT
