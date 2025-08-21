@@ -23,5 +23,3 @@ dumb "Show disk usage for the home folder"
 ### License
 
 MIT
-
-# dumb
