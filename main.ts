@@ -1,7 +1,7 @@
 // Entry point for Dumb CLI
 
-function main() {
+const main = () =>  {
   console.log("Welcome to Dumb CLI!");
 }
 
-  main();
+main();
