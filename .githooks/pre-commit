@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+echo "Checking formatting..."
+deno fmt --ignore=*.md
+
+echo "Running tests..."
+deno test
+
+MSG_FILE=$1
+
+COMMIT_MSG=$(cat "$MSG_FILE")
+
+if ! [[ "$COMMIT_MSG" =~ ^\[[a-zA-Z0-9_-]+\]\ .* ]]; then
+  echo "Commit message must follow the format: [name] message"
+  echo "Example: [JohnDoe] Added new feature for login"
+  exit 1
+fi
+
+echo "All checks passed. Ready for commit."
