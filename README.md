@@ -36,6 +36,7 @@ appropriate command for you.
 ### Configuration
 
 The tool stores its configuration in:
+
 - `~/.config/dumb/config.json` - Contains your API key
 - Configuration file permissions are set to 600 (readable only by you)
 
@@ -60,6 +61,7 @@ dumb "Show disk usage for the home folder"
 ### Uninstallation
 
 To uninstall:
+
 1. Remove the binary:
    ```bash
    rm ~/bin/dumb
