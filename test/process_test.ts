@@ -1,7 +1,7 @@
 import { checkArgs, enrichInput, process } from "../src/process.ts";
 import { assertEquals, assertThrows } from "@std/assert";
 import { describe, it } from "@std/testing/bdd";
-import {expect} from "@std/expect";
+import { expect } from "@std/expect";
 
 describe("checkArgs", () => {
   it("should return joined string for valid args", () => {
@@ -11,42 +11,50 @@ describe("checkArgs", () => {
   });
 
   it("should throw error for empty args", () => {
-    assertThrows(() => {
-      checkArgs([]);
-    }, Error, "No command description given");
+    assertThrows(
+      () => {
+        checkArgs([]);
+      },
+      Error,
+      "No command description given",
+    );
   });
 
   it("should throw error for undefined args", () => {
-    assertThrows(() => {
-      checkArgs([""]);
-    }, Error, "No command description given");
+    assertThrows(
+      () => {
+        checkArgs([""]);
+      },
+      Error,
+      "No command description given",
+    );
   });
 });
 
 describe("enrichInput", () => {
-    it("should return the input string unchanged", () => {
-        const input = "test input";
-        const result = enrichInput(input);
-        assertEquals(result, input);
-    });
+  it("should return the input string unchanged", () => {
+    const input = "test input";
+    const result = enrichInput(input);
+    assertEquals(result, input);
+  });
 
-    it("should handle empty string input", () => {
-        const input = "";
-        const result = enrichInput(input);
-        assertEquals(result, "");
-    });
+  it("should handle empty string input", () => {
+    const input = "";
+    const result = enrichInput(input);
+    assertEquals(result, "");
+  });
 
-    it("should handle special characters", () => {
-        const input = "!@#$%^&*()_+";
-        const result = enrichInput(input);
-        assertEquals(result, input);
-    });
+  it("should handle special characters", () => {
+    const input = "!@#$%^&*()_+";
+    const result = enrichInput(input);
+    assertEquals(result, input);
+  });
 
-    it("should handle long strings", () => {
-        const input = "a".repeat(1000);
-        const result = enrichInput(input);
-        assertEquals(result, input);
-    });
+  it("should handle long strings", () => {
+    const input = "a".repeat(1000);
+    const result = enrichInput(input);
+    assertEquals(result, input);
+  });
 });
 
 describe("process", () => {
@@ -54,7 +62,7 @@ describe("process", () => {
     let logOutput = "";
     const originalLog = console.log;
     console.log = (...args: unknown[]) => {
-        logOutput = args.join(" ");
+      logOutput = args.join(" ");
     };
 
     process(["foo", "bar"]);
