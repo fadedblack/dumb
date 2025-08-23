@@ -14,13 +14,13 @@ describe("detectOs", () => {
   const originalRelease = os.release;
 
   const mockOs = {
-    platform: (): NodeJS.Platform => "linux",
+    platform: () => "linux",
     release: () => "5.4.0",
   };
 
   beforeEach(() => {
-    os.platform = mockOs.platform;
-    os.release = mockOs.release;
+    (os.platform as unknown) = mockOs.platform;
+    (os.release as unknown) = mockOs.release;
   });
 
   afterEach(() => {
@@ -29,9 +29,6 @@ describe("detectOs", () => {
   });
 
   it("should return OS platform and release", () => {
-    os.platform = mockOs.platform;
-    os.release = mockOs.release;
-
     const result = detectOS();
     expect(result).toContain(mockOs.release());
     expect(result).toContain("Linux");
