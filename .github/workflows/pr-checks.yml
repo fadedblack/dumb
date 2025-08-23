@@ -10,10 +10,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: "2.4.3"
+
       - name: Run Deno lint
         run: deno lint
 
@@ -22,14 +24,27 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: "2.4.3"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # you can also use 18 or latest LTS
+          cache: "npm"       # or "pnpm" / "yarn" if you're using that
+
+      - name: Install Node.js dependencies
+        run: npm install
+
       - name: Run Deno tests with coverage
         run: deno test --allow-all --coverage=coverage
+
       - name: Generate coverage report
         run: deno coverage coverage --lcov --output=coverage/lcov.info
+
       - name: Check coverage ratio
         run: |
           COVERAGE=$(deno coverage coverage | grep "All files" | awk '{print $4}' | tr -d '%')
