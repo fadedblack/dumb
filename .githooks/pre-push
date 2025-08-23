@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+echo "Starting pre-push checks..."
+
+echo "Running full test suite..."
+
+deno test
+
+echo "Running linting"
+
+deno lint
+
+echo "Pre-push checks passed. Pushing to remote..."
