@@ -5,15 +5,39 @@ simply providing a description of what you want to do. Instead of remembering
 exact command syntax, just describe your intent and Dumb CLI will execute the
 appropriate command for you.
 
-### Setup
+### Requirements
 
-- Inorder to setup this project into local machine, you need setup hooks.
+- [Deno](https://deno.land/#installation) must be installed on your system
 
-```bash
-git config core.hooksPath .githooks
-```
+### Installation
 
-- The above code will configure hooks.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/fadedblack/dumb.git
+   cd dumb
+   ```
+
+2. Set up git hooks (required for development):
+   ```bash
+   git config core.hooksPath .githooks
+   ```
+
+3. Run the installation script:
+   ```bash
+   ./install.sh
+   ```
+
+   The installer will:
+   - Ask for your API key (stored securely in `~/.config/dumb/config.json`)
+   - Compile the Deno project
+   - Install the binary to `~/bin`
+   - Add the installation directory to your PATH (if needed)
+
+### Configuration
+
+The tool stores its configuration in:
+- `~/.config/dumb/config.json` - Contains your API key
+- Configuration file permissions are set to 600 (readable only by you)
 
 ### Features
 
@@ -30,8 +54,20 @@ dumb "Show disk usage for the home folder"
 
 ### Getting Started
 
-1. Install Dumb CLI (instructions coming soon)
+1. Follow the [Installation](#installation) instructions above
 2. Run `dumb "your command description"`
+
+### Uninstallation
+
+To uninstall:
+1. Remove the binary:
+   ```bash
+   rm ~/bin/dumb
+   ```
+2. Remove configuration (optional):
+   ```bash
+   rm -rf ~/.config/dumb
+   ```
 
 ### Project Structure
 
