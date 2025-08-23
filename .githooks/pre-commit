@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+echo "Checking formatting..."
+deno fmt
+
+echo "Running tests..."
+deno test
+
+echo "All checks passed. Ready for commit."
