@@ -6,6 +6,6 @@ echo "Checking formatting..."
 deno fmt
 
 echo "Running tests..."
-deno test
+deno test -A
 
 echo "All checks passed. Ready for commit."

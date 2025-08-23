@@ -6,7 +6,7 @@ echo "Starting pre-push checks..."
 
 echo "Running full test suite..."
 
-deno test
+deno test -A
 
 echo "Running linting"
 
