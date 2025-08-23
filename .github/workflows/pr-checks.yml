@@ -13,7 +13,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: 1.x
+          deno-version: "2.4.3"
       - name: Run Deno lint
         run: deno lint
 
@@ -25,6 +25,16 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: 1.x
-      - name: Run Deno tests
-        run: deno test --allow-all
+          deno-version: "2.4.3"
+      - name: Run Deno tests with coverage
+        run: deno test --allow-all --coverage=coverage
+      - name: Generate coverage report
+        run: deno coverage coverage --lcov --output=coverage/lcov.info
+      - name: Check coverage ratio
+        run: |
+          COVERAGE=$(deno coverage coverage | grep "All files" | awk '{print $4}' | tr -d '%')
+          echo "Coverage: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 85" | bc -l) )); then
+            echo "Coverage is below 85%!" >&2
+            exit 1
+          fi
