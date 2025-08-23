@@ -1,13 +1,12 @@
-export const enrichInput = (argString: string): string => {
-  return argString;
-};
+import { enrichUserPrompt, generateEnvConfig } from "./enrichUserPrompt.ts";
 
 export const process = (args: string[]): void => {
   try {
     const argString = checkArgs(args);
     console.log("Arguments:", argString);
 
-    enrichInput(argString);
+    const config = generateEnvConfig();
+    enrichUserPrompt(argString, config);
   } catch (error) {
     console.error(error);
   }
