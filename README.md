@@ -1,6 +1,19 @@
 ## Dumb CLI
 
-**Dumb CLI** is a command-line tool that allows you to run shell commands by simply providing a description of what you want to do. Instead of remembering exact command syntax, just describe your intent and Dumb CLI will execute the appropriate command for you.
+**Dumb CLI** is a command-line tool that allows you to run shell commands by
+simply providing a description of what you want to do. Instead of remembering
+exact command syntax, just describe your intent and Dumb CLI will execute the
+appropriate command for you.
+
+### Setup
+
+- Inorder to setup this project into local machine, you need setup hooks.
+
+```bash
+git config core.hooksPath .githooks
+```
+
+- The above code will configure hooks.
 
 ### Features
 
