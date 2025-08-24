@@ -8,14 +8,16 @@ appropriate command for you.
 ### Getting Started
 
 1. Follow the [Installation](#installation) instructions below.
-2. If you haven't created a Gemini API key yet, see [Creating a Gemini API Key](#creating-a-gemini-api-key).
-3. Run `dumb "your command description"`.
+2. If you haven't created a Gemini API key yet, see
+   [Creating a Gemini API Key](#creating-a-gemini-api-key).
+3. Run `dumb-cli "your command description"`.
 
 ### Requirements
 
 - [Deno](https://deno.land/#installation) must be installed on your system
 - Gemini API key (for LLM features)
-  - If you haven't created a Gemini API key yet, see [Creating a Gemini API Key](#creating-a-gemini-api-key)
+  - If you haven't created a Gemini API key yet, see
+    [Creating a Gemini API Key](#creating-a-gemini-api-key)
 
 ### Creating a Gemini API Key
 
@@ -62,7 +64,7 @@ The tool stores its configuration in:
 - Simplifies command-line usage for beginners and power users
 - Saves time by reducing the need to look up command syntax
 
-### Interactive Mode
+### Interactive Mode(<span style="color: gold;">Highly Recommended</span>)
 
 For a more interactive experience, you can add the following function to your
 `~/.zshrc`:
@@ -116,8 +118,10 @@ After adding this function:
 ### Example Usage
 
 ```sh
-dumb "List all files in the current directory"
-dumb "Show disk usage for the home folder"
+dumb-cli "List all files in the current directory"
+# Output: ls -la
+dumb-cli "Show disk usage for the home folder"
+# Output: ls -la
 ```
 
 ### Uninstallation
@@ -128,17 +132,5 @@ To uninstall Dumb CLI, simply run the provided uninstall script:
 ./uninstall.sh
 ```
 
-This will remove the binary and configuration files. Follow any instructions shown after running the script.
-
-### Project Structure
-
-```
-src/
-  main.ts        # Entry point for Dumb CLI
-
-test/
-  main_test.ts   # Basic test for CLI entry point
-
-deno.json        # Deno configuration and tasks
-README.md        # Project documentation
-```
+This will remove the binary and configuration files. Follow any instructions
+shown after running the script.
