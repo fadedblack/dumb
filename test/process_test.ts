@@ -1,9 +1,21 @@
 import { checkArgs, process } from "../src/process.ts";
 import { assertEquals, assertThrows } from "@std/assert";
-import { describe, it } from "@std/testing/bdd";
+import { beforeEach, describe, it } from "@std/testing/bdd";
 import { expect } from "@std/expect";
 
 describe("checkArgs", () => {
+  beforeEach(() => {
+    (globalThis as any).fetch = () => ({
+      ok: true,
+      status: 200,
+      json: () => ({}),
+      text: () => "",
+      body: null,
+      headers: new Headers(),
+      clone: () => ({}),
+    });
+  });
+
   it("should return joined string for valid args", () => {
     const args = ["foo", "bar", "baz"];
     const result = checkArgs(args);
@@ -32,6 +44,18 @@ describe("checkArgs", () => {
 });
 
 describe("process", () => {
+  beforeEach(() => {
+    (globalThis as any).fetch = () => ({
+      ok: true,
+      status: 200,
+      json: () => ({}),
+      text: () => "",
+      body: null,
+      headers: new Headers(),
+      clone: () => ({}),
+    });
+  });
+
   it("should print arguments when valid args are provided", () => {
     let logOutput = "";
     const originalLog = console.log;
