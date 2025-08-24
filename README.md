@@ -62,6 +62,54 @@ The tool stores its configuration in:
 - Simplifies command-line usage for beginners and power users
 - Saves time by reducing the need to look up command syntax
 
+### Interactive Mode
+
+For a more interactive experience, you can add the following function to your `~/.zshrc`:
+
+```zsh
+function dumb() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: dumb <your command>"
+        echo "Example: dumb 'create a branch and change into that branch'"
+        return 1
+    fi
+
+    local input_string="$*"
+    local output
+    local confirm
+    
+    output=$(dumb-cli "$input_string")
+
+    echo "Generated command:"
+    echo "$output"
+
+    echo -n "Do you want to execute this command? (y/N): "
+    read -q confirm
+    echo ""
+
+    if [[ $confirm == "y" ]]; then
+        echo "Executing command..."
+        eval "$output"
+    else
+        echo "Command execution cancelled"
+    fi
+}
+```
+
+This function provides:
+- Command preview before execution
+- Confirmation prompt before running commands
+- Better safety through command review
+- Easy cancellation of commands
+
+After adding this function:
+1. Source your `~/.zshrc`: `source ~/.zshrc`
+2. Use it like this:
+   ```zsh
+   dumb "create a new branch named feature and switch to it"
+   # It will show you the command and ask for confirmation
+   ```
+
 ### Example Usage
 
 ```sh
