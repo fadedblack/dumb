@@ -8,14 +8,16 @@ appropriate command for you.
 ### Getting Started
 
 1. Follow the [Installation](#installation) instructions below.
-2. If you haven't created a Gemini API key yet, see [Creating a Gemini API Key](#creating-a-gemini-api-key).
+2. If you haven't created a Gemini API key yet, see
+   [Creating a Gemini API Key](#creating-a-gemini-api-key).
 3. Run `dumb-cli "your command description"`.
 
 ### Requirements
 
 - [Deno](https://deno.land/#installation) must be installed on your system
 - Gemini API key (for LLM features)
-  - If you haven't created a Gemini API key yet, see [Creating a Gemini API Key](#creating-a-gemini-api-key)
+  - If you haven't created a Gemini API key yet, see
+    [Creating a Gemini API Key](#creating-a-gemini-api-key)
 
 ### Creating a Gemini API Key
 
@@ -130,4 +132,5 @@ To uninstall Dumb CLI, simply run the provided uninstall script:
 ./uninstall.sh
 ```
 
-This will remove the binary and configuration files. Follow any instructions shown after running the script.
+This will remove the binary and configuration files. Follow any instructions
+shown after running the script.
