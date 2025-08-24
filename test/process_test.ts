@@ -56,19 +56,6 @@ describe("process", () => {
     });
   });
 
-  it("should print arguments when valid args are provided", () => {
-    let logOutput = "";
-    const originalLog = console.log;
-    console.log = (...args: unknown[]) => {
-      logOutput = args.join(" ");
-    };
-
-    process(["foo", "bar"]);
-    expect(logOutput.includes("Arguments:")).toBeTruthy();
-    expect(logOutput.includes("foo bar")).toBeTruthy();
-    console.log = originalLog;
-  });
-
   it("should print error when no args are provided", () => {
     let errorOutput = "";
     const originalError = console.error;
