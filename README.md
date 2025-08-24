@@ -11,9 +11,7 @@ appropriate command for you.
 2. If you haven't created a Gemini API key yet, see
    [Creating a Gemini API Key](#creating-a-gemini-api-key).
 3. Run `dumb "your command description"`.
-2. If you haven't created a Gemini API key yet, see
-   [Creating a Gemini API Key](#creating-a-gemini-api-key).
-3. Run `dumb-cli "your command description"`.
+4. Run `dumb-cli "your command description"`.
 
 ### Requirements
 
