@@ -6,8 +6,6 @@ import { getConfig } from "./config.ts";
 export const process = (args: string[]): void => {
   try {
     const argString = checkArgs(args);
-    console.log("Arguments:", argString);
-
     const prompt = enrichUserPrompt(argString, generateEnvConfig());
     interpretPrompt(prompt, GoogleGenerativeAI, getConfig).then(console.log);
   } catch (error) {
