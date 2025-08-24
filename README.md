@@ -64,7 +64,8 @@ The tool stores its configuration in:
 
 ### Interactive Mode
 
-For a more interactive experience, you can add the following function to your `~/.zshrc`:
+For a more interactive experience, you can add the following function to your
+`~/.zshrc`:
 
 ```zsh
 function dumb() {
@@ -97,12 +98,14 @@ function dumb() {
 ```
 
 This function provides:
+
 - Command preview before execution
 - Confirmation prompt before running commands
 - Better safety through command review
 - Easy cancellation of commands
 
 After adding this function:
+
 1. Source your `~/.zshrc`: `source ~/.zshrc`
 2. Use it like this:
    ```zsh
