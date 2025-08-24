@@ -10,6 +10,9 @@ appropriate command for you.
 1. Follow the [Installation](#installation) instructions below.
 2. If you haven't created a Gemini API key yet, see
    [Creating a Gemini API Key](#creating-a-gemini-api-key).
+3. Run `dumb "your command description"`.
+2. If you haven't created a Gemini API key yet, see
+   [Creating a Gemini API Key](#creating-a-gemini-api-key).
 3. Run `dumb-cli "your command description"`.
 
 ### Requirements
@@ -132,5 +135,20 @@ To uninstall Dumb CLI, simply run the provided uninstall script:
 ./uninstall.sh
 ```
 
+This will remove the binary and configuration files. Follow any instructions
+shown after running the script.
+
+### Project Structure
+
+```
+src/
+  main.ts        # Entry point for Dumb CLI
+
+test/
+  main_test.ts   # Basic test for CLI entry point
+
+deno.json        # Deno configuration and tasks
+README.md        # Project documentation
+```
 This will remove the binary and configuration files. Follow any instructions
 shown after running the script.
