@@ -5,6 +5,7 @@ import {
   interpretPrompt,
 } from "./interpretPrompt.ts";
 import { getConfig } from "./config.ts";
+import { SupportedModels } from "./model.ts";
 
 export const process = (args: string[]): void => {
   try {
@@ -23,7 +24,7 @@ export const checkArgs = (args: string[]): string => {
   return args.join(" ");
 };
 
-export const supportedModels = {
+export const supportedModels: SupportedModels = {
   "gemini": callGeminiAPI,
   "openai": callOpenAIAPI,
 };

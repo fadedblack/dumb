@@ -28,7 +28,7 @@ export const callOpenAIAPI = async (
   return response?.output_text ?? "";
 };
 
-export const interpretPrompt = async (
+export const interpretPrompt = (
   prompt: string,
   getConfig: () => Config,
   supportedModels: SupportedModels,

@@ -6,7 +6,7 @@ import {
   callOpenAIAPI,
   interpretPrompt,
 } from "../src/interpretPrompt.ts";
-import { Config } from "../src/model.ts";
+import { Config, SupportedModels } from "../src/model.ts";
 import OpenAI from "@openai/openai";
 
 class MockModel {
@@ -29,7 +29,7 @@ class MockGoogleGenerativeAI {
 class MockOpenAIClient {
   constructor(_: { apiKey: string }) {}
   responses = {
-    create: async (_: any) => ({
+    create: (_: any) => ({
       output_text: "OpenAI response for Is this a test? with model gpt-4o",
     }),
   };
@@ -92,11 +92,10 @@ describe("callOpenAIAPI", () => {
   });
 
   it("should return empty string if output_text is missing", async () => {
-    console.log("checking something");
     class MockOpenAIClientNoOutput {
       constructor(_: { apiKey: string }) {}
       responses = {
-        create: async () => ({}),
+        create: () => ({}),
       };
     }
     const config: Config = {
@@ -126,11 +125,11 @@ describe("interpretPrompt", () => {
     model_name: "openai",
   });
 
-  const supportedModels = {
-    gemini: async (prompt: string, config: Config) =>
-      `mocked gemini: ${prompt}`,
-    openai: async (prompt: string, config: Config) =>
-      `mocked openai: ${prompt}`,
+  const supportedModels: SupportedModels = {
+    "gemini": (prompt: string, _: Config) =>
+      Promise.resolve(`mocked gemini: ${prompt}`),
+    "openai": (prompt: string, _: Config) =>
+      Promise.resolve(`mocked openai: ${prompt}`),
   };
 
   it("should return the Gemini API response text using config", async () => {
@@ -158,7 +157,9 @@ describe("interpretPrompt", () => {
       model_name: "unknown",
     });
     await expect(
-      interpretPrompt("test", mockGetConfigUnknown, supportedModels),
+      Promise.resolve().then(() =>
+        interpretPrompt("test", mockGetConfigUnknown, supportedModels)
+      ),
     ).rejects.toThrow("Model 'unknown' is not supported.");
   });
 });
