@@ -1,74 +1,88 @@
-## Dumb CLI
+# Dumb CLI
 
-**Dumb CLI** is a command-line tool that allows you to run shell commands by
-simply providing a description of what you want to do. Instead of remembering
-exact command syntax, just describe your intent and Dumb CLI will execute the
-appropriate command for you.
+Dumb CLI is a command-line tool that interprets natural language prompts and executes them as shell commands. It can handle multi-step logic, making your workflow easier and more intuitive.
 
-### Getting Started
+---
 
-1. Follow the [Installation](#installation) instructions below.
-2. If you haven't created a Gemini API key yet, see
-   [Creating a Gemini API Key](#creating-a-gemini-api-key).
-3. Run `dumb "your command description"`.
-4. Run `dumb-cli "your command description"`.
+## Example Usage
 
-### Requirements
+```
+dumb find the name of the .md file and echo count the number of lines that is present in that file. After that divide the number of lines output by 7
+```
 
-- [Deno](https://deno.land/#installation) must be installed on your system
-- Gemini API key (for LLM features)
-  - If you haven't created a Gemini API key yet, see
-    [Creating a Gemini API Key](#creating-a-gemini-api-key)
+**Generated command:**
+```
+md_file=$(find . -name "*.md" -print -quit)
+echo "$md_file"
+line_count=$(wc -l <"$md_file" | awk '{print $1}')
+echo "$line_count"
+echo $((line_count / 7))
+Do you want to execute this command? (y/N): y
+Executing command...
+./README.md
+154
+22
+```
 
-### Creating a Gemini API Key
+---
 
-1. Go to [Google AI Studio](https://aistudio.google.com/).
-2. Sign in with your Google account.
-3. Navigate to the API Keys section.
-4. Click on "Create API Key" and follow the instructions.
-5. Copy your new API key and keep it safe.
+## Features
 
-### Installation
+- Run shell commands using natural language descriptions
+- Multi-step logic execution
+- Command preview and confirmation
+- Easy cancellation for safety
+
+---
+
+## Requirements
+
+- [Deno](https://deno.land/#installation)
+- Gemini API key ([How to create one](#creating-a-gemini-api-key))
+
+---
+
+## Installation
 
 1. Clone this repository:
    ```bash
    git clone https://github.com/fadedblack/dumb.git
    cd dumb
    ```
-
-2. Set up git hooks (required for development):
+2. Set up git hooks (for development):
    ```bash
    git config core.hooksPath .githooks
    ```
-
 3. Run the installation script:
    ```bash
    ./install.sh
    ```
+   - The installer will prompt for your Gemini API key and store it in `~/.config/dumb/config.json`.
+   - It will compile the Deno project and install the binary to `~/bin`.
+   - Adds the installation directory to your PATH if needed.
 
-   The installer will:
-   - Ask for your API key and store it securely in `~/.config/dumb/config.json`)
-   - Compile the Deno project
-   - Install the binary to `~/bin`
-   - Add the installation directory to your PATH (if needed)
+---
 
-### Configuration
+## Creating a Gemini API Key
 
-The tool stores its configuration in:
+1. Go to [Google AI Studio](https://aistudio.google.com/).
+2. Sign in with your Google account.
+3. Navigate to the API Keys section.
+4. Click "Create API Key" and follow the instructions.
+5. Copy your new API key and keep it safe.
 
-- `~/.config/dumb/config.json` - Contains your API key
-- Configuration file permissions are set to 600 (readable only by you)
+---
 
-### Features
+## Configuration
 
-- Run shell commands using natural language descriptions
-- Simplifies command-line usage for beginners and power users
-- Saves time by reducing the need to look up command syntax
+- Configuration is stored in `~/.config/dumb/config.json` (permissions: 600)
+- Contains your Gemini API key and other settings
 
-### Interactive Mode(<span style="color: gold;">Highly Recommended</span>)
+---
 
-For a more interactive experience, you can add the following function to your
-`~/.zshrc`:
+## Interactive Mode
+
+For a more interactive experience, add this function to your `~/.zshrc`:
 
 ```zsh
 function dumb() {
@@ -77,20 +91,15 @@ function dumb() {
         echo "Example: dumb 'create a branch and change into that branch'"
         return 1
     fi
-
     local input_string="$*"
     local output
     local confirm
-    
     output=$(dumb-cli "$input_string")
-
     echo "Generated command:"
     echo "$output"
-
     echo -n "Do you want to execute this command? (y/N): "
     read -q confirm
     echo ""
-
     if [[ $confirm == "y" ]]; then
         echo "Executing command..."
         eval "$output"
@@ -100,15 +109,7 @@ function dumb() {
 }
 ```
 
-This function provides:
-
-- Command preview before execution
-- Confirmation prompt before running commands
-- Better safety through command review
-- Easy cancellation of commands
-
 After adding this function:
-
 1. Source your `~/.zshrc`: `source ~/.zshrc`
 2. Use it like this:
    ```zsh
@@ -116,37 +117,14 @@ After adding this function:
    # It will show you the command and ask for confirmation
    ```
 
-### Example Usage
+---
 
-```sh
-dumb-cli "List all files in the current directory"
-# Output: ls -la
-dumb-cli "Show disk usage for the home folder"
-# Output: ls -la
-```
+## Uninstallation
 
-### Uninstallation
-
-To uninstall Dumb CLI, simply run the provided uninstall script:
+To uninstall Dumb CLI, simply run:
 
 ```bash
 ./uninstall.sh
 ```
 
-This will remove the binary and configuration files. Follow any instructions
-shown after running the script.
-
-### Project Structure
-
-```
-src/
-  main.ts        # Entry point for Dumb CLI
-
-test/
-  main_test.ts   # Basic test for CLI entry point
-
-deno.json        # Deno configuration and tasks
-README.md        # Project documentation
-```
-This will remove the binary and configuration files. Follow any instructions
-shown after running the script.
+This will remove the binary and configuration files. Follow any instructions shown after running the script.
