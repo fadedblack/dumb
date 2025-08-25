@@ -7,7 +7,8 @@ import {
   interpretPrompt,
 } from "../src/interpretPrompt.ts";
 import { Config, SupportedModels } from "../src/model.ts";
-import OpenAI from "@openai/openai";
+import { OpenAI } from "@openai/openai";
+
 
 class MockModel {
   generateContent(prompt: string) {
