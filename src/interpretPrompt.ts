@@ -1,10 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { Config } from "./model.ts";
+import { OpenAI } from "@openai/openai";
+import { Config, SupportedModels } from "./model.ts";
 
 export const callGeminiAPI = async (
   prompt: string,
   config: Config,
-  GeminiClient: typeof GoogleGenerativeAI,
+  GeminiClient: typeof GoogleGenerativeAI = GoogleGenerativeAI,
 ): Promise<string> => {
   const genAI = new GeminiClient(config.api_key);
   const model = genAI.getGenerativeModel(config);
@@ -12,10 +13,33 @@ export const callGeminiAPI = async (
   return result?.response?.text() ?? "";
 };
 
-export const interpretPrompt = async (
+export const callOpenAIAPI = async (
   prompt: string,
-  GeminiClient: typeof GoogleGenerativeAI,
-  getConfig: () => Config,
+  config: Config,
+  OpenAIClient: typeof OpenAI = OpenAI,
 ): Promise<string> => {
-  return await callGeminiAPI(prompt, getConfig(), GeminiClient);
+  const client = new OpenAIClient({
+    apiKey: config.api_key,
+  });
+  const response = await client.responses.create({
+    model: config.model,
+    input: prompt,
+  });
+  return response?.output_text ?? "";
+};
+
+export const interpretPrompt = (
+  prompt: string,
+  getConfig: () => Config,
+  supportedModels: SupportedModels,
+): Promise<string> => {
+  const config = getConfig();
+  const modelName = config.model_name.toLowerCase();
+  const modelFn = supportedModels[modelName];
+
+  if (!modelFn) {
+    throw new Error(`Model '${modelName}' is not supported.`);
+  }
+
+  return modelFn(prompt, config);
 };
