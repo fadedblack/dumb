@@ -11,6 +11,7 @@
   },
   "imports": {
     "@google/generative-ai": "npm:@google/generative-ai@^0.24.1",
+    "@openai/openai": "jsr:@openai/openai@^5.15.0",
     "@std/assert": "jsr:@std/assert@^1.0.14",
     "@std/expect": "jsr:@std/expect@^1.0.17",
     "@std/testing": "jsr:@std/testing@^1.0.15"

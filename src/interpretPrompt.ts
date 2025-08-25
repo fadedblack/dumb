@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { Config } from "./model.ts";
+import { OpenAI } from "@openai/openai";
+import { Config, SupportedModels } from "./model.ts";
 
 export const callGeminiAPI = async (
   prompt: string,
@@ -12,10 +13,26 @@ export const callGeminiAPI = async (
   return result?.response?.text() ?? "";
 };
 
+export const callOpenAIAPI = async (
+  prompt: string,
+  config: Config,
+    OpenAIClient: typeof OpenAI,
+): Promise<string> => {
+  return Promise.resolve("true");
+};
+
 export const interpretPrompt = async (
   prompt: string,
-  GeminiClient: typeof GoogleGenerativeAI,
   getConfig: () => Config,
+  supportedModels: SupportedModels
 ): Promise<string> => {
-  return await callGeminiAPI(prompt, getConfig(), GeminiClient);
+  const config = getConfig();
+  const modelName = config.model_name;
+  const modelFn = supportedModels[modelName];
+
+  if (!modelFn) {
+    throw new Error(`Model '${modelName}' is not supported.`);
+  }
+
+  return modelFn(prompt, config);
 };

@@ -59,19 +59,49 @@ describe("callGeminiAPI", () => {
 });
 
 describe("interpretPrompt", () => {
-  const mockGetConfig = () => ({
+  const mockGetConfigGemini = () => ({
     api_key: "fake-key",
     model: "gemini-pro",
-    model_name: "Gemini Pro",
+    model_name: "gemini",
   });
+
+  const mockGetConfigOpenAI = () => ({
+    api_key: "fake-key",
+    model: "openai-pro",
+    model_name: "openai",
+  });
+
+  const supportedModels = {
+    gemini: async (prompt: string, config: Config) => `mocked gemini: ${prompt}`,
+    openai: async (prompt: string, config: Config) => `mocked openai: ${prompt}`,
+  };
 
   it("should return the Gemini API response text using config", async () => {
     const result = await interpretPrompt(
       "world",
-      MockGoogleGenerativeAI as unknown as typeof GoogleGenerativeAI,
-      mockGetConfig,
+      mockGetConfigGemini,
+      supportedModels,
     );
+    expect(result).toEqual("mocked gemini: world");
+  });
 
-    expect(result).toEqual("Echo: world");
+  it("should return 'mocked openai: world' for OpenAI model", async () => {
+    const result = await interpretPrompt(
+      "world",
+      mockGetConfigOpenAI,
+      supportedModels,
+    );
+    expect(result).toEqual("mocked openai: world");
+  });
+
+  it("should throw error for unsupported model", async () => {
+    const mockGetConfigUnknown = () => ({
+      api_key: "fake-key",
+      model: "unknown-pro",
+      model_name: "unknown",
+    });
+    await expect(
+      interpretPrompt("test", mockGetConfigUnknown, supportedModels),
+    ).rejects.toThrow("Model 'unknown' is not supported.");
   });
 });
