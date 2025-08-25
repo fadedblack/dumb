@@ -1,8 +1,13 @@
 import { describe, it } from "@std/testing/bdd";
 import { expect } from "@std/expect/expect";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { callGeminiAPI, interpretPrompt } from "../src/interpretPrompt.ts";
+import {
+  callGeminiAPI,
+  callOpenAIAPI,
+  interpretPrompt,
+} from "../src/interpretPrompt.ts";
 import { Config } from "../src/model.ts";
+import OpenAI from "@openai/openai";
 
 class MockModel {
   generateContent(prompt: string) {
@@ -19,6 +24,15 @@ class MockGoogleGenerativeAI {
   getGenerativeModel(_: Config) {
     return new MockModel();
   }
+}
+
+class MockOpenAIClient {
+  constructor(_: { apiKey: string }) {}
+  responses = {
+    create: async (_: any) => ({
+      output_text: "OpenAI response for Is this a test? with model gpt-4o",
+    }),
+  };
 }
 
 describe("callGeminiAPI", () => {
@@ -58,6 +72,47 @@ describe("callGeminiAPI", () => {
   });
 });
 
+describe("callOpenAIAPI", () => {
+  it("should return OpenAI response for valid input", async () => {
+    const config: Config = {
+      api_key: "fake-key",
+      model: "gpt-4o",
+      model_name: "openai",
+    };
+
+    const result = await callOpenAIAPI(
+      "hello",
+      config,
+      MockOpenAIClient as unknown as typeof OpenAI,
+    );
+
+    expect(result).toEqual(
+      "OpenAI response for Is this a test? with model gpt-4o",
+    );
+  });
+
+  it("should return empty string if output_text is missing", async () => {
+    console.log("checking something");
+    class MockOpenAIClientNoOutput {
+      constructor(_: { apiKey: string }) {}
+      responses = {
+        create: async () => ({}),
+      };
+    }
+    const config: Config = {
+      api_key: "fake-key",
+      model: "gpt-4o",
+      model_name: "openai",
+    };
+    const result = await callOpenAIAPI(
+      "hello",
+      config,
+      MockOpenAIClientNoOutput as unknown as typeof OpenAI,
+    );
+    expect(result).toEqual("");
+  });
+});
+
 describe("interpretPrompt", () => {
   const mockGetConfigGemini = () => ({
     api_key: "fake-key",
@@ -72,8 +127,10 @@ describe("interpretPrompt", () => {
   });
 
   const supportedModels = {
-    gemini: async (prompt: string, config: Config) => `mocked gemini: ${prompt}`,
-    openai: async (prompt: string, config: Config) => `mocked openai: ${prompt}`,
+    gemini: async (prompt: string, config: Config) =>
+      `mocked gemini: ${prompt}`,
+    openai: async (prompt: string, config: Config) =>
+      `mocked openai: ${prompt}`,
   };
 
   it("should return the Gemini API response text using config", async () => {

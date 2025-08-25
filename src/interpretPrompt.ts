@@ -5,7 +5,7 @@ import { Config, SupportedModels } from "./model.ts";
 export const callGeminiAPI = async (
   prompt: string,
   config: Config,
-  GeminiClient: typeof GoogleGenerativeAI,
+  GeminiClient: typeof GoogleGenerativeAI = GoogleGenerativeAI,
 ): Promise<string> => {
   const genAI = new GeminiClient(config.api_key);
   const model = genAI.getGenerativeModel(config);
@@ -16,18 +16,25 @@ export const callGeminiAPI = async (
 export const callOpenAIAPI = async (
   prompt: string,
   config: Config,
-    OpenAIClient: typeof OpenAI,
+  OpenAIClient: typeof OpenAI = OpenAI,
 ): Promise<string> => {
-  return Promise.resolve("true");
+  const client = new OpenAIClient({
+    apiKey: config.api_key,
+  });
+  const response = await client.responses.create({
+    model: config.model,
+    input: prompt,
+  });
+  return response?.output_text ?? "";
 };
 
 export const interpretPrompt = async (
   prompt: string,
   getConfig: () => Config,
-  supportedModels: SupportedModels
+  supportedModels: SupportedModels,
 ): Promise<string> => {
   const config = getConfig();
-  const modelName = config.model_name;
+  const modelName = config.model_name.toLowerCase();
   const modelFn = supportedModels[modelName];
 
   if (!modelFn) {

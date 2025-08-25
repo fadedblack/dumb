@@ -1,6 +1,8 @@
 # Dumb CLI
 
-Dumb CLI is a command-line tool that interprets natural language prompts and executes them as shell commands. It can handle multi-step logic, making your workflow easier and more intuitive.
+Dumb CLI is a command-line tool that interprets natural language prompts and
+executes them as shell commands. It can handle multi-step logic, making your
+workflow easier and more intuitive.
 
 ---
 
@@ -11,6 +13,7 @@ dumb find the name of the .md file and echo count the number of lines that is pr
 ```
 
 **Generated command:**
+
 ```
 md_file=$(find . -name "*.md" -print -quit)
 echo "$md_file"
@@ -57,7 +60,8 @@ Executing command...
    ```bash
    ./install.sh
    ```
-   - The installer will prompt for your Gemini API key and store it in `~/.config/dumb/config.json`.
+   - The installer will prompt for your Gemini API key and store it in
+     `~/.config/dumb/config.json`.
    - It will compile the Deno project and install the binary to `~/bin`.
    - Adds the installation directory to your PATH if needed.
 
@@ -110,6 +114,7 @@ function dumb() {
 ```
 
 After adding this function:
+
 1. Source your `~/.zshrc`: `source ~/.zshrc`
 2. Use it like this:
    ```zsh
@@ -127,4 +132,5 @@ To uninstall Dumb CLI, simply run:
 ./uninstall.sh
 ```
 
-This will remove the binary and configuration files. Follow any instructions shown after running the script.
+This will remove the binary and configuration files. Follow any instructions
+shown after running the script.

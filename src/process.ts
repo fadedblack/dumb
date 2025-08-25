@@ -1,6 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { enrichUserPrompt, generateEnvConfig } from "./enrichUserPrompt.ts";
-import {callGeminiAPI, callOpenAIAPI, interpretPrompt} from "./interpretPrompt.ts";
+import {
+  callGeminiAPI,
+  callOpenAIAPI,
+  interpretPrompt,
+} from "./interpretPrompt.ts";
 import { getConfig } from "./config.ts";
 
 export const process = (args: string[]): void => {
@@ -21,6 +25,6 @@ export const checkArgs = (args: string[]): string => {
 };
 
 export const supportedModels = {
-    "gemini" : callGeminiAPI,
-    "openai": callOpenAIAPI
-}
+  "gemini": callGeminiAPI,
+  "openai": callOpenAIAPI,
+};
