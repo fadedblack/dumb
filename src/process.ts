@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { enrichUserPrompt, generateEnvConfig } from "./enrichUserPrompt.ts";
 import {
   callGeminiAPI,
