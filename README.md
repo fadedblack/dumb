@@ -86,76 +86,80 @@ Executing command...
 
 ## Interactive Mode
 
-  For a more interactive experience, add this function to your `~/.zshrc`:
+For a more interactive experience, add this function to your `~/.zshrc`:
 
-  ```zsh
-  function dumb() {
-      if [ $# -eq 0 ]; then
-          echo "Usage: dumb <your command>"
-          echo "Example: dumb 'create a branch and change into that branch'"
-          return 1
-      fi
-      local input_string="$*"
-      local output
-      local confirm
-      output=$(dumb-cli "$input_string")
-      echo "Generated command:"
-      echo "$output"
-      echo -n "Do you want to execute this command? (y/N): "
-      read -q confirm
-      echo ""
-      if [[ $confirm == "y" ]]; then
-          echo "Executing command..."
-          eval "$output"
-      else
-          echo "Command execution cancelled"
-      fi
-  }
-  ```
-
-  After adding this function:
-
-  1. Source your `~/.zshrc`: `source ~/.zshrc`
-  2. Use it like this:
-    ```zsh
-    dumb "create a new branch named feature and switch to it"
-    # It will show you the command and ask for confirmation
-    ```
-## Keyboard Shortcut (Option + D)
-  Add this enhanced keyboard shortcut to your `~/.zshrc` for quick access with visual feedback:
-
-  ```zsh
-  YELLOW='\033[1;33m'
-  NC='\033[0m' 
-
-  _dumb_wrap_and_run() {
-    if [[ -n "$BUFFER" ]]; then
-      print ""
-      echo -e "${YELLOW}Converting to dumb command:${NC} $BUFFER"
-      zle reset-prompt    
-      eval "dumb $BUFFER" 
-      BUFFER=""           
-      zle reset-prompt    
-    else
-      BUFFER="dumb "
-      zle reset-prompt    
+```zsh
+function dumb() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: dumb <your command>"
+        echo "Example: dumb 'create a branch and change into that branch'"
+        return 1
     fi
-  }
+    local input_string="$*"
+    local output
+    local confirm
+    output=$(dumb-cli "$input_string")
+    echo "Generated command:"
+    echo "$output"
+    echo -n "Do you want to execute this command? (y/N): "
+    read -q confirm
+    echo ""
+    if [[ $confirm == "y" ]]; then
+        echo "Executing command..."
+        eval "$output"
+    else
+        echo "Command execution cancelled"
+    fi
+}
+```
 
-  zle -N _dumb_wrap_and_run
-  bindkey '^[d' _dumb_wrap_and_run
-  ```
+After adding this function:
 
-  **Features:**
-  - Press Option+D to instantly start a new dumb command
-  - Convert existing terminal text into a dumb command with visual highlight
-  - Clear visual feedback when converting text
+1. Source your `~/.zshrc`: `source ~/.zshrc`
+2. Use it like this: `zsh dumb "create a new branch named feature and switch to
+   it"
+   # It will show you the command and ask for confirmation`
 
-  **Usage:**
-  1. Empty prompt: Press Option+D to start a new dumb command
-  2. With existing text: Type your command and press Option+D to convert it with visual highlight
+## Keyboard Shortcut (Option + D)
 
-  ---
+Add this enhanced keyboard shortcut to your `~/.zshrc` for quick access with
+visual feedback:
+
+```zsh
+YELLOW='\033[1;33m'
+NC='\033[0m' 
+
+_dumb_wrap_and_run() {
+  if [[ -n "$BUFFER" ]]; then
+    print ""
+    echo -e "${YELLOW}Converting to dumb command:${NC} $BUFFER"
+    zle reset-prompt    
+    eval "dumb $BUFFER" 
+    BUFFER=""           
+    zle reset-prompt    
+  else
+    BUFFER="dumb "
+    zle reset-prompt    
+  fi
+}
+
+zle -N _dumb_wrap_and_run
+bindkey '^[d' _dumb_wrap_and_run
+```
+
+**Features:**
+
+- Press Option+D to instantly start a new dumb command
+- Convert existing terminal text into a dumb command with visual highlight
+- Clear visual feedback when converting text
+
+**Usage:**
+
+1. Empty prompt: Press Option+D to start a new dumb command
+2. With existing text: Type your command and press Option+D to convert it with
+   visual highlight
+
+---
 
 ## Uninstallation
 
