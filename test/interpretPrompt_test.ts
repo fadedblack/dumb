@@ -9,7 +9,6 @@ import {
 import { Config, SupportedModels } from "../src/model.ts";
 import { OpenAI } from "@openai/openai";
 
-
 class MockModel {
   generateContent(prompt: string) {
     return {

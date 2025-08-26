@@ -116,11 +116,48 @@ function dumb() {
 After adding this function:
 
 1. Source your `~/.zshrc`: `source ~/.zshrc`
-2. Use it like this:
-   ```zsh
-   dumb "create a new branch named feature and switch to it"
-   # It will show you the command and ask for confirmation
-   ```
+2. Use it like this: `zsh dumb "create a new branch named feature and switch to
+   it"
+   # It will show you the command and ask for confirmation`
+
+## Keyboard Shortcut (Option + D)
+
+Add this enhanced keyboard shortcut to your `~/.zshrc` for quick access with
+visual feedback:
+
+```zsh
+YELLOW='\033[1;33m'
+NC='\033[0m' 
+
+_dumb_wrap_and_run() {
+  if [[ -n "$BUFFER" ]]; then
+    print ""
+    echo -e "${YELLOW}Converting to dumb command:${NC} $BUFFER"
+    zle reset-prompt    
+    eval "dumb $BUFFER" 
+    BUFFER=""           
+    zle reset-prompt    
+  else
+    BUFFER="dumb "
+    zle reset-prompt    
+  fi
+}
+
+zle -N _dumb_wrap_and_run
+bindkey '^[d' _dumb_wrap_and_run
+```
+
+**Features:**
+
+- Press Option+D to instantly start a new dumb command
+- Convert existing terminal text into a dumb command with visual highlight
+- Clear visual feedback when converting text
+
+**Usage:**
+
+1. Empty prompt: Press Option+D to start a new dumb command
+2. With existing text: Type your command and press Option+D to convert it with
+   visual highlight
 
 ---
 
