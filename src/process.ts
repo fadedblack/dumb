@@ -6,6 +6,7 @@ import {
 } from "./interpretPrompt.ts";
 import { getConfig } from "./config.ts";
 import { SupportedModels } from "./model.ts";
+import { showHelp } from "./options.ts";
 
 export const process = (args: string[]): void => {
   try {
@@ -44,8 +45,4 @@ export const executeOption = (args: string[]): void => {
     default:
       throw new Error("Invalid option. Valid options are -h or --help.");
   }
-};
-
-export const showHelp = (): void => {
-  console.log("Help: Usage instructions...");
 };
