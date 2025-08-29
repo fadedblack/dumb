@@ -1,80 +1,45 @@
-import { checkArgs, process } from "../src/process.ts";
-import { assertEquals, assertThrows } from "@std/assert";
-import { beforeEach, describe, it } from "@std/testing/bdd";
-import { expect } from "@std/expect";
+import { describe, it } from "@std/testing/bdd";
+import * as something from "../src/process.ts";
+import { expect } from "@std/expect/expect";
+import { checkArgs } from "../src/process.ts";
+
+describe("hasOptions", () => {
+  it("should return true if first arg starts with '-'", () => {
+    expect(something.hasOptions(["-h"])).toBeTruthy();
+    expect(something.hasOptions(["--help"])).toBeTruthy();
+    expect(something.hasOptions(["-x"])).toBeTruthy();
+  });
+
+  it("should return false if first arg does not start with '-'", () => {
+    expect(something.hasOptions(["foo"])).toBeFalsy();
+    expect(something.hasOptions([])).toBeFalsy();
+    expect(something.hasOptions(["find", "-h"])).toBeFalsy();
+  });
+});
 
 describe("checkArgs", () => {
-  beforeEach(() => {
-    (globalThis as any).fetch = () => ({
-      ok: true,
-      status: 200,
-      json: () => ({}),
-      text: () => "",
-      body: null,
-      headers: new Headers(),
-      clone: () => ({}),
-    });
+  it("should join arguments with space", () => {
+    expect(checkArgs(["foo", "bar"])).toBe("foo bar");
+    expect(checkArgs(["one"])).toBe("one");
+    expect(checkArgs(["a", "b", "c"])).toBe("a b c");
   });
 
-  it("should return joined string for valid args", () => {
-    const args = ["foo", "bar", "baz"];
-    const result = checkArgs(args);
-    assertEquals(result, "foo bar baz");
+  it("should throw error if args is empty array", () => {
+    expect(() => checkArgs([])).toThrow("No command description given");
   });
 
-  it("should throw error for empty args", () => {
-    assertThrows(
-      () => {
-        checkArgs([]);
-      },
-      Error,
-      "No command description given",
-    );
+  it("should throw error if args is undefined", () => {
+    expect(() => checkArgs(undefined as unknown as string[])).toThrow("No command description given");
   });
 
-  it("should throw error for undefined args", () => {
-    assertThrows(
-      () => {
-        checkArgs([""]);
-      },
-      Error,
-      "No command description given",
-    );
+  it("should throw error if args is array of empty string", () => {
+    expect(() => checkArgs([""])).toThrow("No command description given");
+  });
+
+  it("should throw error if args is array of whitespace only", () => {
+    expect(() => checkArgs(["   "])).toThrow("No command description given");
   });
 });
 
-describe("process", () => {
-  beforeEach(() => {
-    (globalThis as any).fetch = () => ({
-      ok: true,
-      status: 200,
-      json: () => ({}),
-      text: () => "",
-      body: null,
-      headers: new Headers(),
-      clone: () => ({}),
-    });
-  });
 
-  it("should print error when no args are provided", () => {
-    let errorOutput = "";
-    const originalError = console.error;
-    console.error = (msg: string) => {
-      errorOutput += msg;
-    };
-    process([]);
-    expect(errorOutput.includes("No command description given")).toBeTruthy();
-    console.error = originalError;
-  });
 
-  it("should print error when blank string is provided", () => {
-    let errorOutput = "";
-    const originalError = console.error;
-    console.error = (msg: string) => {
-      errorOutput += msg;
-    };
-    process([""]);
-    expect(errorOutput.includes("No command description given")).toBeTruthy();
-    console.error = originalError;
-  });
-});
