@@ -29,21 +29,26 @@ Executing command...
 
 ---
 
+
 ## Features
 
 - Run shell commands using natural language descriptions
 - Multi-step logic execution
 - Command preview and confirmation
 - Easy cancellation for safety
+- Supports both Gemini and OpenAI models (choose by setting your API key)
 
 ---
+
 
 ## Requirements
 
 - [Deno](https://deno.land/#installation)
 - Gemini API key ([How to create one](#creating-a-gemini-api-key))
+- OpenAI API key ([How to create one](#creating-an-openai-api-key))
 
 ---
+
 
 ## Installation
 
@@ -60,12 +65,13 @@ Executing command...
    ```bash
    ./install.sh
    ```
-   - The installer will prompt for your Gemini API key and store it in
+   - The installer will prompt for your Gemini API key and/or OpenAI API key and store them in
      `~/.config/dumb/config.json`.
    - It will compile the Deno project and install the binary to `~/bin`.
    - Adds the installation directory to your PATH if needed.
 
 ---
+
 
 ## Creating a Gemini API Key
 
@@ -75,12 +81,21 @@ Executing command...
 4. Click "Create API Key" and follow the instructions.
 5. Copy your new API key and keep it safe.
 
+## Creating an OpenAI API Key
+
+1. Go to [OpenAI Platform](https://platform.openai.com/).
+2. Sign in or create an account.
+3. Navigate to the API Keys section.
+4. Click "Create new secret key" and follow the instructions.
+5. Copy your new API key and keep it safe.
+
 ---
+
 
 ## Configuration
 
 - Configuration is stored in `~/.config/dumb/config.json` (permissions: 600)
-- Contains your Gemini API key and other settings
+- Contains your Gemini API key, OpenAI API key, and other settings
 
 ---
 
@@ -116,9 +131,11 @@ function dumb() {
 After adding this function:
 
 1. Source your `~/.zshrc`: `source ~/.zshrc`
-2. Use it like this: `zsh dumb "create a new branch named feature and switch to
-   it"
-   # It will show you the command and ask for confirmation`
+2. Use it like this: 
+```
+   zsh dumb "create a new branch named feature and switch to it"
+   # It will show you the command and ask for confirmation
+```
 
 ## Keyboard Shortcut (Option + D)
 
