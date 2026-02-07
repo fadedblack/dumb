@@ -15,14 +15,17 @@ export const process = (args: string[]): void => {
     }
     const argString = checkArgs(args);
     const prompt = enrichUserPrompt(argString, generateEnvConfig());
-    interpretPrompt(prompt, getConfig, supportedModels).then(console.log);
+    interpretPrompt(prompt, getConfig, supportedModels);
   } catch (error) {
     console.error(error);
   }
 };
 
 export const checkArgs = (args: string[]): string => {
-  if (!args || args.join("").length === 0 || args.every(arg => arg.trim().length === 0)) {
+  if (
+    !args || args.join("").length === 0 ||
+    args.every((arg) => arg.trim().length === 0)
+  ) {
     throw new Error("No command description given");
   }
   return args.join(" ");

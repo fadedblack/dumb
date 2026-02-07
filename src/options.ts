@@ -1,5 +1,5 @@
 export const showHelp = (): void => {
-console.log(`Dumb CLI - Help
+  console.log(`Dumb CLI - Help
 
 Usage:
   dumb <your natural language command>
@@ -63,4 +63,4 @@ bindkey '^[d' _dumb_wrap_and_run
 
 For more details, see the README.md.
 `);
-}
+};

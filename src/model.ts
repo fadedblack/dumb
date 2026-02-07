@@ -6,5 +6,5 @@ export type Config = {
 
 export type SupportedModels = Record<
   string,
-  (...args: any[]) => Promise<string>
+  (...args: any[]) => Promise<void>
 >;

@@ -29,7 +29,9 @@ describe("checkArgs", () => {
   });
 
   it("should throw error if args is undefined", () => {
-    expect(() => checkArgs(undefined as unknown as string[])).toThrow("No command description given");
+    expect(() => checkArgs(undefined as unknown as string[])).toThrow(
+      "No command description given",
+    );
   });
 
   it("should throw error if args is array of empty string", () => {
@@ -40,6 +42,3 @@ describe("checkArgs", () => {
     expect(() => checkArgs(["   "])).toThrow("No command description given");
   });
 });
-
-
-
