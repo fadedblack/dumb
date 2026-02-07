@@ -1,8 +1,7 @@
 {
+  "version": "2.0.0",
   "fmt": {
-    "exclude": [
-      ".github/"
-    ]
+    "exclude": [".github/"]
   },
   "lint": {
     "rules": {
