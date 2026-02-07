@@ -6,7 +6,7 @@ export const callGeminiAPI = async (
   prompt: string,
   config: Config,
   GeminiClient: typeof GoogleGenerativeAI = GoogleGenerativeAI,
-): Promise<string> => {
+): Promise<void> => {
   const genAI = new GeminiClient(config.api_key);
   const model = genAI.getGenerativeModel(config);
   const result = await model.generateContentStream(prompt);
@@ -15,37 +15,67 @@ export const callGeminiAPI = async (
 
   for await (const chunk of result.stream) {
     const text = chunk.text();
+    console.log(text);
     streamedText += text;
   }
 
   if (streamedText) {
-    return streamedText;
+    return;
   }
 
-  const response = await result.response;
-  return response?.text() ?? "";
+  throw new Error("No response received from Gemini API.");
 };
 
 export const callOpenAIAPI = async (
   prompt: string,
   config: Config,
   OpenAIClient: typeof OpenAI = OpenAI,
-): Promise<string> => {
+): Promise<void> => {
   const client = new OpenAIClient({
     apiKey: config.api_key,
   });
   const response = await client.responses.create({
     model: config.model,
     input: prompt,
-  });
-  return response?.output_text ?? "";
+    stream: true,
+  }) as unknown;
+  if (
+    response && typeof response === "object" && Symbol.asyncIterator in response
+  ) {
+    let hasText = false;
+    for await (
+      const event of response as AsyncIterable<Record<string, unknown>>
+    ) {
+      const text = (typeof event.delta === "string" && event.delta) ||
+        (typeof event.text === "string" && event.text) ||
+        (typeof event.output_text === "string" && event.output_text) ||
+        "";
+      if (text) {
+        hasText = true;
+        console.log(text);
+      }
+    }
+    if (!hasText) {
+      throw new Error("No response received from OpenAI API.");
+    }
+    return;
+  }
+  if (response && typeof response === "object" && "output_text" in response) {
+    const outputText = (response as { output_text?: string }).output_text ?? "";
+    if (!outputText) {
+      throw new Error("No response received from OpenAI API.");
+    }
+    console.log(outputText);
+    return;
+  }
+  throw new Error("No response received from OpenAI API.");
 };
 
 export const interpretPrompt = (
   prompt: string,
   getConfig: () => Config,
   supportedModels: SupportedModels,
-): Promise<string> => {
+): Promise<void> => {
   const config = getConfig();
   const modelName = config.model_name.toLowerCase();
   const modelFn = supportedModels[modelName];
@@ -54,5 +84,6 @@ export const interpretPrompt = (
     throw new Error(`Model '${modelName}' is not supported.`);
   }
 
-  return modelFn(prompt, config);
+  modelFn(prompt, config);
+  return Promise.resolve();
 };
