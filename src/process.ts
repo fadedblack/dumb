@@ -7,16 +7,29 @@ import {
 import { getConfig } from "./config.ts";
 import { SupportedModels } from "./model.ts";
 import { showHelp } from "./options.ts";
+import ora from "ora";
+
+export const spinner = ora({
+  text: "Processing...\n",
+  color: "yellow",
+  spinner: "dots4",
+});
 
 export const process = (args: string[]): void => {
   try {
+    spinner.start();
     if (hasOptions(args)) {
       return executeOption(args); //will have to change later
     }
     const argString = checkArgs(args);
     const prompt = enrichUserPrompt(argString, generateEnvConfig());
     interpretPrompt(prompt, getConfig, supportedModels);
+
+    setTimeout(() => { // user feel
+      spinner.succeed("Command found!");
+    }, 1000);
   } catch (error) {
+    spinner.fail("Failed to fetch command.");
     console.error(error);
   }
 };

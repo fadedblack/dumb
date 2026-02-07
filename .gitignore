@@ -2,3 +2,4 @@
 .vscode/
 coverage/
 deno.lock
+node_modules/
