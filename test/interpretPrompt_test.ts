@@ -10,11 +10,16 @@ import { Config, SupportedModels } from "../src/model.ts";
 import { OpenAI } from "@openai/openai";
 
 class MockModel {
-  generateContent(prompt: string) {
+  generateContentStream(prompt: string) {
     return {
-      response: {
+      stream: (async function* () {
+        yield {
+          text: () => `Echo: ${prompt}`,
+        };
+      })(),
+      response: Promise.resolve({
         text: () => `Echo: ${prompt}`,
-      },
+      }),
     };
   }
 }
@@ -52,8 +57,12 @@ describe("callGeminiAPI", () => {
   });
 
   it("should return empty string if response is missing", async () => {
-    const originalGenerateContent = MockModel.prototype.generateContent;
-    (MockModel.prototype as any).generateContent = () => {};
+    const originalGenerateContentStream = MockModel.prototype
+      .generateContentStream;
+    (MockModel.prototype as any).generateContentStream = () => ({
+      stream: (async function* () {})(),
+      response: Promise.resolve(undefined),
+    });
 
     const config: Config = {
       api_key: "fake-key",
@@ -68,7 +77,8 @@ describe("callGeminiAPI", () => {
     );
     expect(result).toEqual("");
 
-    (MockModel.prototype as any).generateContent = originalGenerateContent;
+    (MockModel.prototype as any).generateContentStream =
+      originalGenerateContentStream;
   });
 });
 

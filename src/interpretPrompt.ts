@@ -9,8 +9,21 @@ export const callGeminiAPI = async (
 ): Promise<string> => {
   const genAI = new GeminiClient(config.api_key);
   const model = genAI.getGenerativeModel(config);
-  const result = await model.generateContent(prompt);
-  return result?.response?.text() ?? "";
+  const result = await model.generateContentStream(prompt);
+
+  let streamedText = "";
+
+  for await (const chunk of result.stream) {
+    const text = chunk.text();
+    streamedText += text;
+  }
+
+  if (streamedText) {
+    return streamedText;
+  }
+
+  const response = await result.response;
+  return response?.text() ?? "";
 };
 
 export const callOpenAIAPI = async (

@@ -7,6 +7,7 @@ import {
 import { getConfig } from "./config.ts";
 import { SupportedModels } from "./model.ts";
 import { showHelp } from "./options.ts";
+import { log } from "node:console";
 
 export const process = (args: string[]): void => {
   try {
